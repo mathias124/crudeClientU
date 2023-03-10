@@ -11,6 +11,7 @@ public class crudeClientU {
         String M = "helo martin" + "\r\n";
         String mailCommand = "mail from: ";
         String mailrecp = "rcpt to: <";
+        String data = "data";
 
 
         try {
@@ -56,7 +57,12 @@ public class crudeClientU {
                     writer.newLine();
 
                     writer.flush();
+                } else if ((serverMsg.equals("250 Recipient accepted"))) {
+                    System.out.println("Enter what you would like");
 
+                    writer.write(data);
+                    writer.newLine();
+                    writer.flush();
                 } else if (serverMsg.startsWith("354")) {
 
                     boolean run = true;
