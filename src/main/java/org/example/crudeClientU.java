@@ -8,12 +8,12 @@ public class crudeClientU {
 
     public static void main(String argv[]) {
         Scanner in = new Scanner(System.in);
-        String M = "helo martin" +"\r\n" ;
-        String mailCommand ="mail from: ";
+        String M = "helo martin" + "\r\n";
+        String mailCommand = "mail from: ";
         String mailrecp = "rcpt to: <";
 
 
-        try  {
+        try {
 
             Socket socketClient = new Socket("datacomm.bhsi.xyz", 2526);
 
@@ -29,82 +29,68 @@ public class crudeClientU {
 
             while ((serverMsg = reader.readLine()) != null) {
                 System.out.println(serverMsg);
-               if ((serverMsg.startsWith("220"))) {
+                if ((serverMsg.startsWith("220"))) {
 
-                   writer.write(M);
-                   writer.flush();
+                    writer.write(M);
+                    writer.flush();
 
                     //System.out.println(s + "k");
-                }
-                else if ((serverMsg.equals("250 Nice to meet you"))) {
+                } else if ((serverMsg.equals("250 Nice to meet you"))) {
                     System.out.println("Please enter your Email adress:");
                     s = in.nextLine();
                     //writer.write(s);
-                    writer.write(mailCommand + s + "\r\n" );
-                   //writer.write(mailCommand + s + "\r\n" );
+                    writer.write(mailCommand + s + "\r\n");
+                    //writer.write(mailCommand + s + "\r\n" );
 
 
-                   writer.flush();
+                    writer.flush();
 
-                }
-                else if ((serverMsg.equals("250 New message started"))) {
+                } else if ((serverMsg.equals("250 New message started"))) {
                     System.out.println("Please enter a desired email receptient:");
-                   String b = in.nextLine();
-                   //writer.write(s);
-                   String mailrep ="rcpt to: ";
-                   String kartoffel = mailrecp +b + ">";
-                   writer.write( kartoffel + "\r\n"  );
+                    String b = in.nextLine();
+                    //writer.write(s);
+                    String mailrep = "rcpt to: ";
+                    String kartoffel = mailrecp + b + ">";
+                    writer.write(kartoffel + "\r\n");
 
-                   writer.newLine();
+                    writer.newLine();
 
-                   writer.flush();
-
-                }
-
-                else if (serverMsg.startsWith("354")) {
-                    s = in.nextLine();
-                    writer.write(s + "\r\n");
                     writer.flush();
 
-                    s = in.nextLine();
-                    writer.write(s + "\r\n");
-                    writer.flush();
+                } else if (serverMsg.startsWith("354")) {
 
-                    s = in.nextLine();
-                    writer.write(s + "\r\n");
-                    writer.flush();
+                    boolean run = true;
 
-                    s = in.nextLine();
-                    writer.write(s + "\r\n");
-                    writer.flush();
+                    while (run) {
+                        if (in.hasNext(".")) {
+                            run = false;
+                            writer.flush();
+                        }
 
-                    s = in.nextLine();
-                    writer.write(s + "\r\n");
-                    writer.flush();
+                        if (in.hasNext("\r\n")) {
+                            s = "";
+                            writer.write(s + "\r\n");
+                            writer.flush();
+                        }
 
-                    s = in.nextLine();
-                    writer.write(s + "\r\n");
-                    writer.flush();
-
-
+                        s = in.nextLine();
+                        writer.write(s + "\r\n");
+                        writer.flush();
+                    }
                 } else {
                     s = in.nextLine();
                     writer.write(s + "\r\n");
                     writer.flush();
                 }
-
             }
 
-            } catch(UnknownHostException ex){
-                throw new RuntimeException(ex);
-            } catch(IOException ex){
+        } catch (UnknownHostException ex) {
+            throw new RuntimeException(ex);
+        } catch (IOException ex) {
 
 
-            } catch(Exception e){
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
-
-
+}
