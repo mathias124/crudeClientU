@@ -9,8 +9,12 @@ public class crudeClientU {
     public static void main(String argv[]) {
         Scanner in = new Scanner(System.in);
         String M = "helo martin" +"\r\n" ;
+        String mailCommand ="mail from: ";
+        String mailrecp = "rcpt to: <";
 
-        try {
+
+        try  {
+
             Socket socketClient = new Socket("datacomm.bhsi.xyz", 2526);
 
             System.out.println("Client: " + "Connection Established");
@@ -23,36 +27,41 @@ public class crudeClientU {
 
             String s, serverMsg;
 
-
             while ((serverMsg = reader.readLine()) != null) {
                 System.out.println(serverMsg);
                if ((serverMsg.startsWith("220"))) {
 
-                    writer.write(M);
-
-                    writer.flush();
+                   writer.write(M);
+                   writer.flush();
 
                     //System.out.println(s + "k");
                 }
-                if ((serverMsg.equals("250 Nice to meet you"))) {
+                else if ((serverMsg.equals("250 Nice to meet you"))) {
                     System.out.println("Please enter your Email adress:");
                     s = in.nextLine();
-                    String mailCommand ="mail from:";
-                    writer.write(mailCommand + s );
+                    //writer.write(s);
+                    writer.write(mailCommand + s + "\r\n" );
+                   //writer.write(mailCommand + s + "\r\n" );
 
-                    //writer.flush();
+
+                   writer.flush();
+
                 }
-                if ((serverMsg.equals("250 New message started"))) {
+                else if ((serverMsg.equals("250 New message started"))) {
                     System.out.println("Please enter a desired email receptient:");
-                    String B = in.nextLine();
-                    String mailCommand ="rcpt to :";
-                    writer.write( mailCommand + "<" + B + ">");
-                    //System.out.println(B);
-                    //writer.flush();
+                   String b = in.nextLine();
+                   //writer.write(s);
+                   String mailrep ="rcpt to: ";
+                   String kartoffel = mailrecp +b + ">";
+                   writer.write( kartoffel + "\r\n"  );
+
+                   writer.newLine();
+
+                   writer.flush();
+
                 }
 
-
-                if (serverMsg.startsWith("354")) {
+                else if (serverMsg.startsWith("354")) {
                     s = in.nextLine();
                     writer.write(s + "\r\n");
                     writer.flush();
@@ -83,8 +92,6 @@ public class crudeClientU {
                     writer.write(s + "\r\n");
                     writer.flush();
                 }
-
-
 
             }
 
