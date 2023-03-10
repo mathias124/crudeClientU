@@ -14,6 +14,8 @@ public class crudeClientU {
         String data = "data";
 
 
+        // hello
+
         try {
 
             Socket socketClient = new Socket("datacomm.bhsi.xyz", 2526);
