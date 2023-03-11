@@ -10,7 +10,7 @@ public class crudeClientU {
         Scanner in = new Scanner(System.in);
         String M = "helo martin" + "\r\n";
         String mailCommand = "mail from: ";
-        String mailrecp = "rcpt to: <";
+        String mailrecp = "rcpt to: ";
         String data = "data";
 
 
@@ -18,7 +18,7 @@ public class crudeClientU {
 
         try {
 
-            Socket socketClient = new Socket("datacomm.bhsi.xyz", 2526);
+            Socket socketClient = new Socket("datacomm.bhsi.xyz", 2552);
 
             System.out.println("Client: " + "Connection Established");
 
@@ -32,39 +32,39 @@ public class crudeClientU {
 
             while ((serverMsg = reader.readLine()) != null) {
                 System.out.println(serverMsg);
-                if ((serverMsg.startsWith("220"))) {
+                if ((serverMsg.startsWith("220 Welcome"))) {
 
                     writer.write(M);
                     writer.flush();
-
                     //System.out.println(s + "k");
-                } else if ((serverMsg.equals("250 Nice to meet you"))) {
+
+                } else if ((serverMsg.startsWith("250 comit.dev"))) {
                     System.out.println("Please enter your Email adress:");
                     s = in.nextLine();
                     //writer.write(s);
                     writer.write(mailCommand + s + "\r\n");
                     //writer.write(mailCommand + s + "\r\n" );
-
-
                     writer.flush();
 
-                } else if ((serverMsg.equals("250 New message started"))) {
+                } else if ((serverMsg.startsWith("250 2.1.0"))) {
                     System.out.println("Please enter a desired email receptient:");
                     String b = in.nextLine();
                     //writer.write(s);
                     String mailrep = "rcpt to: ";
-                    String kartoffel = mailrecp + b + ">";
+                    String kartoffel = mailrecp + b;
                     writer.write(kartoffel + "\r\n");
-
-                    writer.newLine();
-
+                    // writer.newLine();
                     writer.flush();
-                } else if ((serverMsg.equals("250 Recipient accepted"))) {
+
+                } else if ((serverMsg.startsWith("250 2.1.5"))) {
                     System.out.println("Enter what you would like");
+                    String dataText = "data";
+                    // String a = in.nextLine();
+                    writer.write(dataText + "\r\n");
 
-                    writer.write(data);
-                    writer.newLine();
+                    // writer.newLine();
                     writer.flush();
+
                 } else if (serverMsg.startsWith("354")) {
 
                     boolean run = true;
