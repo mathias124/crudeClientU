@@ -30,12 +30,12 @@ public class crudeClientU {
 
             while ((serverMsg = reader.readLine()) != null) {
                 System.out.println(serverMsg);
-                if (serverMsg.startsWith("220 Welcome")) {
+                if (serverMsg.startsWith("220")) {
                     System.out.println("[SERVER RESPONSE] Connection Established\n");
                     writer.write(startSyntax + "\r\n");
                     writer.flush();
 
-                } else if (serverMsg.startsWith("250 comit.dev")) {
+                } else if (serverMsg.startsWith("250 comit")) {
                     System.out.println("[SERVER RESPONSE] Successful Login");
                     System.out.println("\nPlease enter the sender email address");
                     String senderInput = in.nextLine();
